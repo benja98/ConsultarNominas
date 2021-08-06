@@ -1,16 +1,17 @@
 package com.example.demo.model;
 
-
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,71 +24,50 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "facturas")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Facturas.findAll", query = "SELECT f FROM Facturas f")
-    , @NamedQuery(name = "Facturas.findById", query = "SELECT f FROM Facturas f WHERE f.id = :id")
-    , @NamedQuery(name = "Facturas.findByFecha", query = "SELECT f FROM Facturas f WHERE f.fecha = :fecha")
-    , @NamedQuery(name = "Facturas.findByEmpresa", query = "SELECT f FROM Facturas f WHERE f.empresa = :empresa")
-    , @NamedQuery(name = "Facturas.findByFacturanum", query = "SELECT f FROM Facturas f WHERE f.facturanum = :facturanum")
-    , @NamedQuery(name = "Facturas.findByFechaventa", query = "SELECT f FROM Facturas f WHERE f.fechaventa = :fechaventa")
-    , @NamedQuery(name = "Facturas.findByFechapago", query = "SELECT f FROM Facturas f WHERE f.fechapago = :fechapago")
-    , @NamedQuery(name = "Facturas.findByImpaga", query = "SELECT f FROM Facturas f WHERE f.impaga = :impaga")
-    , @NamedQuery(name = "Facturas.findByImpresa", query = "SELECT f FROM Facturas f WHERE f.impresa = :impresa")
-    , @NamedQuery(name = "Facturas.findByPago", query = "SELECT f FROM Facturas f WHERE f.pago = :pago")})
+//@NamedQueries({
+//    @NamedQuery(name = "Facturas.findAll", query = "SELECT f FROM Facturas f")
+//    , @NamedQuery(name = "Facturas.findById", query = "SELECT f FROM Facturas f WHERE f.id = :id")
+//    , @NamedQuery(name = "Facturas.findByFecha", query = "SELECT f FROM Facturas f WHERE f.fecha = :fecha")
+//    , @NamedQuery(name = "Facturas.findByFacturanum", query = "SELECT f FROM Facturas f WHERE f.facturanum = :facturanum")
+//    , @NamedQuery(name = "Facturas.findByFechaventa", query = "SELECT f FROM Facturas f WHERE f.fechaventa = :fechaventa")
+//    , @NamedQuery(name = "Facturas.findByFechapago", query = "SELECT f FROM Facturas f WHERE f.fechapago = :fechapago")
+//    , @NamedQuery(name = "Facturas.findByImpaga", query = "SELECT f FROM Facturas f WHERE f.impaga = :impaga")
+//    , @NamedQuery(name = "Facturas.findByImpresa", query = "SELECT f FROM Facturas f WHERE f.impresa = :impresa")})
 public class Facturas implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
-    @Basic(optional = false)
-    @Column(name = "empresa")
-    private String empresa;
-    @Basic(optional = false)
     @Column(name = "facturanum")
-    private int facturanum;
-    @Basic(optional = false)
+    private Integer facturanum;
     @Column(name = "fechaventa")
     @Temporal(TemporalType.DATE)
     private Date fechaventa;
-    @Basic(optional = false)
     @Column(name = "fechapago")
     @Temporal(TemporalType.DATE)
     private Date fechapago;
-    @Basic(optional = false)
     @Column(name = "impaga")
     private String impaga;
-    @Basic(optional = false)
     @Column(name = "impresa")
     private String impresa;
-    @Basic(optional = false)
-    @Column(name = "pago")
-    private int pago;
-    @OneToOne(cascade = CascadeType.MERGE, mappedBy = "facturas")
-    private Pagos pagos;
+    @JoinColumn(name = "empresa", referencedColumnName = "id")
+    @ManyToOne
+    private Empresas empresa;
+    @JoinColumn(name = "pago", referencedColumnName = "id")
+    @ManyToOne
+    private Pagos pago;
 
     public Facturas() {
     }
 
     public Facturas(Integer id) {
         this.id = id;
-    }
-
-    public Facturas(Integer id, Date fecha, String empresa, int facturanum, Date fechaventa, Date fechapago, String impaga, String impresa, int pago) {
-        this.id = id;
-        this.fecha = fecha;
-        this.empresa = empresa;
-        this.facturanum = facturanum;
-        this.fechaventa = fechaventa;
-        this.fechapago = fechapago;
-        this.impaga = impaga;
-        this.impresa = impresa;
-        this.pago = pago;
     }
 
     public Integer getId() {
@@ -106,19 +86,11 @@ public class Facturas implements Serializable {
         this.fecha = fecha;
     }
 
-    public String getEmpresa() {
-        return empresa;
-    }
-
-    public void setEmpresa(String empresa) {
-        this.empresa = empresa;
-    }
-
-    public int getFacturanum() {
+    public Integer getFacturanum() {
         return facturanum;
     }
 
-    public void setFacturanum(int facturanum) {
+    public void setFacturanum(Integer facturanum) {
         this.facturanum = facturanum;
     }
 
@@ -154,45 +126,45 @@ public class Facturas implements Serializable {
         this.impresa = impresa;
     }
 
-    public int getPago() {
+    public Empresas getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresas empresa) {
+        this.empresa = empresa;
+    }
+
+    public Pagos getPago() {
         return pago;
     }
 
-    public void setPago(int pago) {
+    public void setPago(Pagos pago) {
         this.pago = pago;
     }
 
-    public Pagos getPagos() {
-        return pagos;
-    }
+//    @Override
+//    public int hashCode() {
+//        int hash = 0;
+//        hash += (id != null ? id.hashCode() : 0);
+//        return hash;
+//    }
 
-    public void setPagos(Pagos pagos) {
-        this.pagos = pagos;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Facturas)) {
-            return false;
-        }
-        Facturas other = (Facturas) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "javaapplication3.Facturas[ id=" + id + " ]";
-    }
-    
+//    @Override
+//    public boolean equals(Object object) {
+//        // TODO: Warning - this method won't work in the case the id fields are not set
+//        if (!(object instanceof Facturas)) {
+//            return false;
+//        }
+//        Facturas other = (Facturas) object;
+//        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+//            return false;
+//        }
+//        return true;
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return "javaapplication2.Facturas[ id=" + id + " ]";
+//    }
+//    
 }
