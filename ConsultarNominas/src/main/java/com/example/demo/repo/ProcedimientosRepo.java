@@ -21,6 +21,7 @@ public class ProcedimientosRepo {
 			throw new DatosNoEncontradosException("409", " ERROR AL LISTAR ");
 		}
 		return listar;
+		
 	}
 
 	public Optional<Facturas> findById(Integer id){

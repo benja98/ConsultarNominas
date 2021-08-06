@@ -32,6 +32,8 @@ public class ProcedimientosDao implements Serializable{
 	private Double totalpagar;
 	private Integer factura;
 	
+	
+	
 	public ProcedimientosDao(Integer idfactura, Date fecha, Integer empresa, Integer facturanum, Date fechaventa,
 			Date fechapago, String impaga, String impresa, Integer pago, Integer idempresa, String nombre,
 			Integer idpagos, String fromapago, String tipofactura, Double subtotal, Double subtotaliva,
